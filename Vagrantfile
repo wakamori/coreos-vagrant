@@ -67,6 +67,16 @@ Vagrant.configure("2") do |config|
     v.functional_vboxsf     = false
   end
 
+  if Vagrant.has_plugin?("vagrant-proxyconf")
+    config.proxy.http = ENV['http_proxy']
+    config.proxy.https = ENV['https_proxy']
+    if ENV['no_proxy']
+      config.proxy.no_proxy = ENV['no_proxy']
+    else
+      config.proxy.no_proxy = "localhost,127.0.0.1"
+    end
+  end
+
   # plugin conflict
   if Vagrant.has_plugin?("vagrant-vbguest") then
     config.vbguest.auto_update = false
